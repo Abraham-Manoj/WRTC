@@ -3,6 +3,10 @@ from firebase import   get_current_coordinates ,store_location , mark_pin_on_map
 
 app = Flask(__name__)
 
+locations = {
+    'Chitethukara' : {9.998145840493189, 76.35064461403556},
+    'Kakkanadu' : {10.01852510975548, 76.34406950865164}
+}
 
 drivers = {
     'driver123': {'password': '123', 'name': 'suresh', 'busID': '01'},
@@ -63,11 +67,16 @@ def submit():
         data_from_js = request.get_json()
         selected_value = data_from_js.get('user_value')
         print(selected_value)
+        latitude , longitude = locations[selected_value]
+        mark_pin_on_map(latitude,longitude,"ravi")
         return jsonify({'status': 'success'})
     except Exception as e:
         print(f"Error processing data: {str(e)}")
         return jsonify({'status': 'error', 'message': str(e)})
 
+@app.route('/map_show')
+def map_and_eta():
+    return render_template('map_show.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

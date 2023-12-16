@@ -31,19 +31,20 @@
 
         // Make a POST request to the Flask backend
         fetch('/submit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.message);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                window.location.href = '/map_show';  // Redirect only after the successful response
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            }); 
     }
 </script>
 </html>
