@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Start geolocation</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+</head>
+<body>
+
+    <h1>Start Live Location Tracking</h1>
+
+    <button id="trackingButton" onclick="toggleTracking()">Start Tracking</button>
+
+    <script>
+        let tracking = false;
+        let intervalId;
+
+        function toggleTracking() {
+            if (tracking) {
+                // If tracking is active, stop it
+                clearInterval(intervalId);
+                tracking = false;
+                document.getElementById('trackingButton').textContent = 'Start Tracking';
+            } else {
+                // If tracking is not active, start it
+                sendLocation(); // Call immediately
+                intervalId = setInterval(sendLocation, 5000); // Call every 5 seconds
+                tracking = true;
+                document.getElementById('trackingButton').textContent = 'Stop Tracking';
+            }
+        }
+
+        function sendLocation() {
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+        }
+
+        function successCallback(position) {
+            // Handle the retrieved position
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            console.log('Latitude:', latitude);
+            console.log('Longitude:', longitude);
+
+            fetch('/process_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    latitude: latitude,
+                    longitude: longitude
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server (if needed)
+                console.log('Server response:', data);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function errorCallback(error) {
+            // Handle the error
+            console.error('Error code:', error.code);
+            console.error('Error message:', error.message);
+        }
+    </script>
+
+</body>
+</html>

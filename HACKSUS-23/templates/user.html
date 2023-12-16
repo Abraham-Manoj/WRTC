@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Passing Example</title>
+</head>
+<body>
+
+    <h1>thiss sis the user!</h1>
+
+    <script>
+        navigator.geolocation.getCurrentPosition(successCallback,errorCallback);
+        function successCallback(position) {
+    // Handle the retrieved position
+        const lattitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        console.log('Latitude:', position.coords.latitude);
+        console.log('Longitude:', position.coords.longitude);
+        fetch('/process_data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                lattitude: lattitude,
+                longitude: longitude
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the response from the server (if needed)
+            console.log('Server response:', data);
+        })
+        .catch(error => console.error('Error:', error));
+        }
+
+        function errorCallback(error) {
+    // Handle the error
+        console.error('Error code:', error.code);
+        console.error('Error message:', error.message);
+    }
+    </script>
+
+</body>
+</html>
