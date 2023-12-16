@@ -3,44 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Passing Example</title>
+    <title>Dropdown Example</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/user.css') }}">
 </head>
 <body>
+<div class="box">
+<div>
+<h2>Select Destination:</h2>
+<select id="destinationDropdown">
+    <option value="Chitethukara">Chitethukara</option>
+    <option value="Kakkanadu">Kakkanadu</option>
+</select>
+</div>
+<div>
+<button class="slide-in-button" onclick="submitSelectedValue()">Travel!</button>
+</div>
 
-    <h1>thiss sis the user!</h1>
+</body>
+<script>
+         function submitSelectedValue() {
+        const dropdown = document.getElementById('destinationDropdown');
+        const selectedValue = dropdown.value;
+        // Construct JSON payload
+        const payload = {
+            user_value: selectedValue
+        };
 
-    <script>
-        navigator.geolocation.getCurrentPosition(successCallback,errorCallback);
-        function successCallback(position) {
-    // Handle the retrieved position
-        const lattitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        console.log('Latitude:', position.coords.latitude);
-        console.log('Longitude:', position.coords.longitude);
-        fetch('/process_data', {
+        // Make a POST request to the Flask backend
+        fetch('/submit', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                lattitude: lattitude,
-                longitude: longitude
-            })
+            body: JSON.stringify(payload),
         })
         .then(response => response.json())
         .then(data => {
-            // Handle the response from the server (if needed)
-            console.log('Server response:', data);
+            console.log(data.message);
         })
-        .catch(error => console.error('Error:', error));
-        }
-
-        function errorCallback(error) {
-    // Handle the error
-        console.error('Error code:', error.code);
-        console.error('Error message:', error.message);
+        .catch(error => {
+            console.error('Error:', error);
+        });
     }
-    </script>
-
-</body>
+</script>
 </html>

@@ -16,18 +16,23 @@
 
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
-
+            <a class="click" href="#" onclick="redirect()">Not a driver? Click here</a>
             <button type="button" onclick="submitLoginForm()">Login</button>
         </form>
     </div>
 
     <script>
+        function redirect()
+        {
+            window.location.href = "/user";
+        }
         function submitLoginForm() {
+                
             const driverId = document.getElementById('driverId').value;
             const password = document.getElementById('password').value;
 
             // Send login credentials to the server (you can use fetch or another method)
-            fetch('/driver_auth', {
+            fetch('/process_data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
