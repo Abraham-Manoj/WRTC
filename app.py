@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request,jsonify
-
+from firebase import   get_current_coordinates ,store_location , mark_pin_on_map
 
 app = Flask(__name__)
 
@@ -40,6 +40,7 @@ def process_data():
         longitude = data_from_js.get('longitude')
         #passing data to Firbase real time database: 
         #pass_to_firebase(busID, lattitude, longitude)
+        store_location(busID,lattitude,longitude)
         print(busID, lattitude, longitude)
         return jsonify({'status': 'success'})
         
