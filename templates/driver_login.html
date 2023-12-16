@@ -1,0 +1,121 @@
+<<<<<<< HEAD:HACKSUS-23/templates/driver_login.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Login</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>Driver Login</h1>
+        <form id="loginForm">
+            <label for="driverId">Driver ID:</label>
+            <input type="text" id="driverId" name="driverId" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <a class="click" href="#" onclick="redirect()">Not a driver? Click here</a>
+            <button type="button" onclick="submitLoginForm()">Login</button>
+        </form>
+    </div>
+
+    <script>
+        function redirect()
+        {
+            window.location.href = "/user";
+        }
+        function submitLoginForm() {
+                
+            const driverId = document.getElementById('driverId').value;
+            const password = document.getElementById('password').value;
+
+            // Send login credentials to the server (you can use fetch or another method)
+            fetch('/driver_auth', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    driverId: driverId,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server (e.g., redirect on success)
+                if (data.success) {
+                    window.location.href = '/driver_track'; // Redirect to the dashboard page
+                } else {
+                    alert('Login failed. Please check your credentials.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+
+</body>
+</html>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Login</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>Driver Login</h1>
+        <form id="loginForm">
+            <label for="driverId">Driver ID:</label>
+            <input type="text" id="driverId" name="driverId" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <a class="click" href="#" onclick="redirect()">Not a driver? Click here</a>
+            <button type="button" onclick="submitLoginForm()">Login</button>
+        </form>
+    </div>
+
+    <script>
+        function redirect()
+        {
+            window.location.href = "/user";
+        }
+        function submitLoginForm() {
+                
+            const driverId = document.getElementById('driverId').value;
+            const password = document.getElementById('password').value;
+
+            // Send login credentials to the server (you can use fetch or another method)
+            fetch('/process_data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    driverId: driverId,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server (e.g., redirect on success)
+                if (data.success) {
+                    window.location.href = '/driver_track'; // Redirect to the dashboard page
+                } else {
+                    alert('Login failed. Please check your credentials.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+
+</body>
+</html>
+>>>>>>> cdb7e2aa34c97a938b6faf6cb0ea0c1011f66352:templates/driver_login.html
