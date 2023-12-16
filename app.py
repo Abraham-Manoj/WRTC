@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request,jsonify
-
+from firebase import   get_current_coordinates ,store_location
 
 app = Flask(__name__)
 
@@ -35,12 +35,14 @@ def driver_track():
 @app.route('/process_data', methods=['POST'])
 def process_data():
     try:
+        driver_id = "driver123"
         data_from_js = request.get_json()
         lattitude = data_from_js.get('latitude')
         longitude = data_from_js.get('longitude')
         #passing data to Firbase real time database: 
         #pass_to_firebase(busID, lattitude, longitude)
         print(busID, lattitude, longitude)
+        store_location(driver_id,lattitude,longitude)
         return jsonify({'status': 'success'})
         
     except Exception as e:
