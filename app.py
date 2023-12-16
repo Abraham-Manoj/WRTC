@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request,jsonify
 from firebase import   get_current_coordinates ,store_location , mark_pin_on_map
+from eta_ml import eta
 
 app = Flask(__name__)
 
@@ -55,6 +56,8 @@ def process_data():
 #####
 #####   THIS IS WEHRE USER STARTS
 #####
+lattitude_user = ""
+longitude_user = ""
 
 @app.route('/user')
 def user():
@@ -67,16 +70,23 @@ def submit():
         data_from_js = request.get_json()
         selected_value = data_from_js.get('user_value')
         print(selected_value)
-        latitude , longitude = locations[selected_value]
-        mark_pin_on_map(latitude,longitude,"ravi")
+        lattitude_user , longitude_user = locations[selected_value]
+        mark_pin_on_map(lattitude_user,longitude_user,"ravi")
         return jsonify({'status': 'success'})
     except Exception as e:
         print(f"Error processing data: {str(e)}")
         return jsonify({'status': 'error', 'message': str(e)})
 
 @app.route('/map_show')
-def map_and_eta():
-    return render_template('map_show.html')
+def arrival():
+    # You can dynamically generate the arrival_message based on your logic
+    bus_loc = get_current_coordinates()
+    arrival_message = eta(lattitude_user, longitude_user, bus_loc[0], bus_loc[1])
+    return render_template('arrival.html', arrival_message=arrival_message)
+
+@app.route('/map')
+def map():
+    return render_template('map.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

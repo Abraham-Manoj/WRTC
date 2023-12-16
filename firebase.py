@@ -24,7 +24,7 @@ def get_current_coordinates(busID):
         longitude = snapshot.get('longitude')
         if latitude is not None and longitude is not None:
             print(f"Driver {busID} is currently at coordinates: Latitude {latitude}, Longitude {longitude}")
-            mark_pin_on_map(latitude,longitude,busID)
+            return [latitude,longitude]
         else:
             print(f"Driver {busID} coordinates not found.")
     else:
