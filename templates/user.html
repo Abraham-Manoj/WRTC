@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Example</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/user.css') }}">
+</head>
+<body>
+<div class="box">
+<div>
+<h2>Select Destination:</h2>
+<select id="destinationDropdown">
+    <option value="Chitethukara">Chitethukara</option>
+    <option value="Kakkanadu">Kakkanadu</option>
+</select>
+</div>
+<div>
+<button class="slide-in-button" onclick="submitSelectedValue()">Travel!</button>
+</div>
+
+</body>
+<script>
+         function submitSelectedValue() {
+        const dropdown = document.getElementById('destinationDropdown');
+        const selectedValue = dropdown.value;
+        // Construct JSON payload
+        const payload = {
+            user_value: selectedValue
+        };
+
+        // Make a POST request to the Flask backend
+        fetch('/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+</html>
