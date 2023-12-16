@@ -36,7 +36,7 @@ def driver_track():
 def process_data():
     try:
         data_from_js = request.get_json()
-        lattitude = data_from_js.get('de')
+        lattitude = data_from_js.get('latitude')
         longitude = data_from_js.get('longitude')
         #passing data to Firbase real time database: 
         #pass_to_firebase(busID, lattitude, longitude)
