@@ -19,7 +19,7 @@ def driver_auth():
     data = request.get_json()
     driver_id = data.get('driverId')
     password = data.get('password')
-
+    
     # Check if user exists and the password is correct (replace with database queries)
     if driver_id in drivers and drivers[driver_id]['password'] == password:
         busID = drivers[driver_id]['busID']
