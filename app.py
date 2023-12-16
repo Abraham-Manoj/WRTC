@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request,jsonify
 
+
 app = Flask(__name__)
+
 
 drivers = {
     'driver123': {'password': '123', 'name': 'suresh', 'busID': '01'},
@@ -45,6 +47,27 @@ def process_data():
         print(f"Error processing data: {str(e)}")
         return jsonify({'status': 'error', 'message': str(e)})
     
+#####
+#####   THIS IS WEHRE USER STARTS
+####
+
+@app.route('/user')
+def user():
+    return render_template('user.html')
+
+
+@app.route('/submit', methods=['POST'])
+def submit():
+    try:
+        data_from_js = request.get_json()
+        selected_value = data_from_js.get('user_value')
+        print(selected_value)
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        print(f"Error processing data: {str(e)}")
+        return jsonify({'status': 'error', 'message': str(e)})
+
+
 if __name__ == '__main__':
     app.run(debug=True)
     
