@@ -1,8 +1,13 @@
 from flask import Flask, render_template, request,jsonify
-from firebase import   get_current_coordinates ,store_location
+from firebase import   get_current_coordinates ,store_location , mark_pin_on_map
 
 app = Flask(__name__)
 
+
+locations = {
+    'Chitethukara' : {9.998145840493189, 76.35064461403556},
+    'Kakkanadu' : {10.01852510975548, 76.34406950865164}
+}
 
 drivers = {
     'driver123': {'password': '123', 'name': 'suresh', 'busID': '01'},
@@ -55,8 +60,12 @@ def process_data():
 
 @app.route('/user')
 def user():
+    
     return render_template('user.html')
 
+@app.route('/map')
+def map():
+    return render_template('map.html')
 
 @app.route('/submit', methods=['POST'])
 def submit():
@@ -64,7 +73,9 @@ def submit():
         data_from_js = request.get_json()
         selected_value = data_from_js.get('user_value')
         print(selected_value)
-        return jsonify({'status': 'success'})
+        latitude , longitude = locations[selected_value]
+        mark_pin_on_map(latitude,longitude,"ravi")
+        return render_template('map.html')
     except Exception as e:
         print(f"Error processing data: {str(e)}")
         return jsonify({'status': 'error', 'message': str(e)})
